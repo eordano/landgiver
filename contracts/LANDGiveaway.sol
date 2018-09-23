@@ -22,6 +22,19 @@ contract LANDGiveaway is ILANDGiveaway, Ownable, ERC721Receiver {
 
     LAND721 public land = LAND721(0x09eA84f780CFC6B10bAFE7B26c8F7B1f3D2DA112);
 
+    event Rented (
+        int indexed x,
+        int indexed y,
+        address indexed beneficiary,
+        uint untilTime
+    );
+    event Returned (
+        int indexed x,
+        int indexed y,
+        address indexed beneficiary,
+        uint when
+    );
+
     function availableLand() external view returns (int[] memory, int[] memory) {
         uint balance = land.balanceOf(this);
         uint amount = balance - rentedLands;
@@ -64,6 +77,8 @@ contract LANDGiveaway is ILANDGiveaway, Ownable, ERC721Receiver {
         expires[x][y] = now + rentTime;
         rentedLands += 1;
         land.setUpdateOperator(tokenId, beneficiary);
+
+		emit Rented(x, y, beneficiary, now + rentTime);
     }
 
     function setRentTime(uint time) external onlyOwner {
@@ -87,17 +102,27 @@ contract LANDGiveaway is ILANDGiveaway, Ownable, ERC721Receiver {
     }
 
     function reclaimLand(int x, int y) external {
-        _reclaimLand(x, y);
+        if (rentedTo[x][y] != 0 && expires[x][y] < now) {
+        	_reclaimLand(x, y);
+        }
     }
 
     function _reclaimLand(int x, int y) internal {
-        if (rentedTo[x][y] != 0 && expires[x][y] < now) {
-            rentedTo[x][y] = 0;
-            expires[x][y] = 0;
-            land.setUpdateOperator(land.encodeTokenId(x, y), 0);
-            rentedLands -= 1;
-        }
+		address beneficiary = rentedTo[x][y];
+
+        rentedTo[x][y] = 0;
+        expires[x][y] = 0;
+        land.setUpdateOperator(land.encodeTokenId(x, y), 0);
+        rentedLands -= 1;
+
+		emit Returned(x, y, beneficiary, now);
     }
+
+	function returnLand(int x, int y) public {
+		if (rentedTo[x][y] == msg.sender) {
+			_reclaimLand(x, y);
+		}
+	} 
 
     function rentedLand() external view returns (int[] memory xs, int[] memory ys) {
         uint balance = land.balanceOf(this);
