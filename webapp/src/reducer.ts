@@ -9,7 +9,7 @@ import {
   storageReducerWrapper
 } from '@dapps/modules/storage/reducer'
 import { transactionReducer as transaction } from '@dapps/modules/transaction/reducer'
-import { invitesReducer as invite } from 'modules/invite/reducer'
+import { availableReducer as available } from 'modules/giveaway/reducer'
 
 // TODO: Consider spliting individual reducers into { data, loading, error }
 export const rootReducer = storageReducerWrapper(
@@ -19,6 +19,6 @@ export const rootReducer = storageReducerWrapper(
     translation,
     storage,
     transaction,
-    invite
+    available
   })
 )

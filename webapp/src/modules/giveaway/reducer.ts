@@ -1,4 +1,7 @@
 import { loadingReducer, LoadingState } from '@dapps/modules/loading/reducer'
+
+import { Coordinates } from './types'
+
 import {
   FETCH_AVAILABLE_REQUEST,
   FETCH_AVAILABLE_SUCCESS,
@@ -8,11 +11,9 @@ import {
   FetchAvailableSuccessAction
 } from './actions'
 
-export type Coordinate = { x: number, y: number }
-
 export type AvailableState = {
   loading: LoadingState
-  data: Array<Coordinate>
+  data: Array<Coordinates>
   error: null | string
 }
 
@@ -27,7 +28,7 @@ export const AvailableInitialState: AvailableState = {
   error: null
 }
 
-export function fetchAvailableLandReducer(
+export function availableReducer(
   state: AvailableState = AvailableInitialState,
   action: FetchAvailableReducerAction
 ): AvailableState {

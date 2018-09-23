@@ -5,13 +5,13 @@ import { locationSaga } from '@dapps/modules/location/sagas'
 import { createWalletSaga } from '@dapps/modules/wallet/sagas'
 import { createTranslationSaga } from '@dapps/modules/translation/sagas'
 import { transactionSaga } from '@dapps/modules/transaction/sagas'
-import { inviteSaga } from 'modules/invite/sagas'
-import { manaToken, invite } from 'contracts'
+import { giveawaySaga } from 'modules/giveaway/sagas'
+import { manaToken, giveaway } from 'contracts'
 import * as translations from 'translations'
 
 const walletSaga = createWalletSaga({
   provider: env.get('REACT_APP_PROVIDER_URL'),
-  contracts: [manaToken, invite],
+  contracts: [manaToken, giveaway],
   eth
 })
 
@@ -25,6 +25,6 @@ export function* rootSaga() {
     walletSaga(),
     translationSaga(),
     transactionSaga(),
-    inviteSaga()
+    giveawaySaga()
   ])
 }
