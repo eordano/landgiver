@@ -1,12 +1,11 @@
 import { Transaction } from '@dapps/modules/transaction/types'
+import { Coordinates } from 'modules/giveaway/types'
 
 export interface HomePageProps {
-  invites: number
+  available: Coordinates[]
   pendingTransactions: Transaction[]
   transactionHistory: Transaction[]
   totalSent: number
-  onInvite: (address: string) => void
 }
 export interface HomePageState {
-  address: string
 }
