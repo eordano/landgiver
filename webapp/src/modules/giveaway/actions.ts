@@ -17,10 +17,15 @@ export const fetchAvailableLandFailure = (errorMessage: string) =>
     errorMessage
   })
 
-export type FetchAvailableRequestAction = ReturnType<typeof fetchAvailableLandRequest>
-export type FetchAvailableSuccessAction = ReturnType<typeof fetchAvailableLandSuccess>
-export type FetchAvailableFailureAction = ReturnType<typeof fetchAvailableLandFailure>
-
+export type FetchAvailableRequestAction = ReturnType<
+  typeof fetchAvailableLandRequest
+>
+export type FetchAvailableSuccessAction = ReturnType<
+  typeof fetchAvailableLandSuccess
+>
+export type FetchAvailableFailureAction = ReturnType<
+  typeof fetchAvailableLandFailure
+>
 
 // Get a LAND
 
@@ -28,10 +33,11 @@ export const GET_LAND_REQUEST = '[Request] Get Land'
 export const GET_LAND_SUCCESS = '[Success] Get Land'
 export const GET_LAND_FAILURE = '[Failure] Get Land'
 
-export const getLandRequest = (coors: Coordinates) => action(GET_LAND_REQUEST, coors)
+export const getLandRequest = (coors: Coordinates) =>
+  action(GET_LAND_REQUEST, coors)
 
 export const getLandSuccess = (txHash: string, coors: Coordinates) =>
-    action(GET_LAND_SUCCESS, { coors, txHash })
+  action(GET_LAND_SUCCESS, { coors, txHash })
 
 export const getLandFailure = (coors: Coordinates, errorMessage: string) =>
   action(GET_LAND_FAILURE, {

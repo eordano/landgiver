@@ -1,11 +1,5 @@
 import * as React from 'react'
-import {
-  Header,
-  Segment,
-  Table,
-  Blockie,
-  Address
-} from 'decentraland-ui'
+import { Header, Segment, Table, Blockie, Address } from 'decentraland-ui'
 
 import EtherscanLink from '@dapps/containers/EtherscanLink'
 import { Transaction } from '@dapps/modules/transaction/types'
@@ -28,11 +22,13 @@ class LandImage extends React.PureComponent<LandImageProps, any> {
     const land = this.props.coors
     const key = `${land.x},${land.y}`
     const url = `https://api.decentraland.org/v1/map.png?width=64&height=64&center=${key}`
-    return <div className='' key={key}>
-      <a href='#' onClick={this.handleClick}>
+    return (
+      <div className="" key={key}>
+        <a href="#" onClick={this.handleClick}>
           <img src={url} />
-      </a>
-    </div>
+        </a>
+      </div>
+    )
   }
 }
 
@@ -40,9 +36,14 @@ export default class HomePage extends React.PureComponent<
   HomePageProps,
   HomePageState
 > {
-
   renderAvailable(land: Coordinates) {
-    return <LandImage key={land.x+','+land.y} coors={land} getLand={this.props.getLand} />
+    return (
+      <LandImage
+        key={land.x + ',' + land.y}
+        coors={land}
+        getLand={this.props.getLand}
+      />
+    )
   }
 
   render() {
@@ -56,13 +57,11 @@ export default class HomePage extends React.PureComponent<
     return (
       <div className="HomePage">
         <Header size="huge">Giving Away LAND</Header>
-        <Header sub>
-          Get a LAND to use for free for 24 hours
-        </Header>
+        <Header sub>Get a LAND to use for free for 24 hours</Header>
         <Segment>
           <div className="header">
             <Header>Available Lands</Header>
-            { available.map(land => this.renderAvailable(land)) }
+            {available.map(land => this.renderAvailable(land))}
           </div>
         </Segment>
 

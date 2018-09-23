@@ -36,7 +36,10 @@ function* handleFetchAvailableLandRequest(_: FetchAvailableRequestAction) {
     const callResult = yield call(() => giveaway.availableLand())
     const result: Coordinates[] = []
     for (let i = 0; i < callResult[0].length; i++) {
-      result.push({ x: callResult[0][i].toNumber() as number, y: callResult[1][i].toNumber() as number })
+      result.push({
+        x: callResult[0][i].toNumber() as number,
+        y: callResult[1][i].toNumber() as number
+      })
     }
     yield put(fetchAvailableLandSuccess(result))
   } catch (error) {

@@ -9,5 +9,4 @@ export interface HomePageProps {
   totalSent: number
   getLand: (coors: Coordinates) => GetLandRequestAction
 }
-export interface HomePageState {
-}
+export interface HomePageState {}
