@@ -10,6 +10,9 @@ import {
   fetchAvailableLandSuccess,
   fetchAvailableLandFailure,
   FetchAvailableRequestAction
+  getLandSuccess,
+  getLandFailure,
+  GetLandRequestAction
 } from './actions'
 
 import { Coordinates } from './types'
@@ -20,6 +23,7 @@ export function* giveawaySaga() {
   yield takeLatest(CONNECT_WALLET_SUCCESS, dispatchFetchAvailable)
   yield takeLatest(CONNECT_WALLET_FAILURE, dispatchFetchAvailable)
   yield takeLatest(FETCH_AVAILABLE_REQUEST, handleFetchAvailableLandRequest)
+  yield takeLatest(GET_LAND_REQUEST, handleGetLand)
 }
 
 function* dispatchFetchAvailable(_: ConnectWalletSuccessAction) {
@@ -36,5 +40,16 @@ function* handleFetchAvailableLandRequest(_: FetchAvailableRequestAction) {
     yield put(fetchAvailableLandSuccess(result))
   } catch (error) {
     yield put(fetchAvailableLandFailure(error.message))
+  }
+}
+
+function* handleGetLand(action: GetLandRequestAction) {
+  try {
+    const txHash = yield call(() => {
+      giveaway.getLand(landRequest.payload.x, landRequest.payload.y)
+    })
+    yield put(getLandSuccess(txHash, action.payload))
+  } catch (error) {
+    yield put(getLandFailure(action.payload, error.message))
   }
 }
