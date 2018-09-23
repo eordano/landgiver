@@ -1,6 +1,6 @@
 pragma solidity ^0.4.25;
 
-contract ILANDGiveaway {
+interface ILANDGiveaway {
     
     function availableLand() public returns (int[] x, int[] y);
     

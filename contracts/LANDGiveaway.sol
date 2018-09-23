@@ -1,10 +1,10 @@
 pragma solidity ^0.4.25;
 
-import "openzeppelin-zos/contracts/ownership/Ownable.sol";
-import "openzeppelin-zos/contracts/token/ERC721/ERC721.sol";
-import "openzeppelin-zos/contracts/token/ERC721/ERC721Receiver.sol";
+import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
+import "openzeppelin-solidity/contracts/token/ERC721/ERC721.sol";
+import "openzeppelin-solidity/contracts/token/ERC721/ERC721Receiver.sol";
 
-import "ILANDGiveaway.sol";
+import "./ILANDGiveaway.sol";
 
 contract LANDGiveaway is ILANDGiveaway, Ownable, ERC721Receiver {
 
