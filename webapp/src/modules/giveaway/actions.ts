@@ -30,10 +30,10 @@ export const GET_LAND_FAILURE = '[Failure] Get Land'
 
 export const getLandRequest = (coors: Coordinates) => action(GET_LAND_REQUEST, coors)
 
-export const getLandSuccess = (coors: Coordinates) =>
-  action(GET_LAND_SUCCESS, coors)
+export const getLandSuccess = (txHash: string, coors: Coordinates) =>
+    action(GET_LAND_SUCCESS, { coors, txHash })
 
-export const getLandFailure = (Coordinates coors, errorMessage: string) =>
+export const getLandFailure = (coors: Coordinates, errorMessage: string) =>
   action(GET_LAND_FAILURE, {
     coors,
     errorMessage

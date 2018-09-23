@@ -6,10 +6,11 @@ import {
 } from '@dapps/modules/wallet/actions'
 import {
   FETCH_AVAILABLE_REQUEST,
+  GET_LAND_REQUEST,
   fetchAvailableLandRequest,
   fetchAvailableLandSuccess,
   fetchAvailableLandFailure,
-  FetchAvailableRequestAction
+  FetchAvailableRequestAction,
   getLandSuccess,
   getLandFailure,
   GetLandRequestAction
@@ -46,7 +47,7 @@ function* handleFetchAvailableLandRequest(_: FetchAvailableRequestAction) {
 function* handleGetLand(action: GetLandRequestAction) {
   try {
     const txHash = yield call(() => {
-      giveaway.getLand(landRequest.payload.x, landRequest.payload.y)
+      giveaway.getLand(action.payload.x, action.payload.y)
     })
     yield put(getLandSuccess(txHash, action.payload))
   } catch (error) {

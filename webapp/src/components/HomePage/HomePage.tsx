@@ -14,6 +14,27 @@ import { HomePageProps, HomePageState } from './types'
 import './HomePage.css'
 
 import { Coordinates } from 'modules/giveaway/types'
+import { GetLandRequestAction } from 'modules/giveaway/actions'
+
+type LandImageProps = {
+  coors: Coordinates
+  getLand: (coors: Coordinates) => GetLandRequestAction
+}
+
+class LandImage extends React.PureComponent<LandImageProps, any> {
+  handleClick = () => this.props.getLand(this.props.coors)
+
+  render() {
+    const land = this.props.coors
+    const key = `${land.x},${land.y}`
+    const url = `https://api.decentraland.org/v1/map.png?width=64&height=64&center=${key}`
+    return <div className='' key={key}>
+      <a href='#' onClick={this.handleClick}>
+          <img src={url} />
+      </a>
+    </div>
+  }
+}
 
 export default class HomePage extends React.PureComponent<
   HomePageProps,
@@ -21,9 +42,7 @@ export default class HomePage extends React.PureComponent<
 > {
 
   renderAvailable(land: Coordinates) {
-    return <div className=''>
-      <img src={`https://api.decentraland.org/v1/map.png?width=64&height=64&center=${land.x},${land.y}`} />
-    </div>
+    return <LandImage key={land.x+','+land.y} coors={land} getLand={this.props.getLand} />
   }
 
   render() {

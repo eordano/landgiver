@@ -7,6 +7,10 @@ import {
 } from '@dapps/modules/transaction/selectors'
 
 import { getAvailable } from 'modules/giveaway/selectors'
+import { Coordinates } from 'modules/giveaway/types'
+
+import { Dispatch, AnyAction } from 'redux'
+import { getLandRequest } from 'modules/giveaway/actions'
 
 import HomePage from './HomePage'
 import { HomePageProps } from './types'
@@ -33,7 +37,9 @@ const mapState = (state: RootState): Partial<HomePageProps> => {
 }
 
 const mapDispatch = (
+  dispatch: Dispatch<AnyAction>
 ): Partial<HomePageProps> => ({
+  getLand: (coors: Coordinates) => dispatch(getLandRequest(coors))
 })
 
 export default connect<any>(

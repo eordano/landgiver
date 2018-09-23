@@ -237,28 +237,6 @@
         {
           "name": "y",
           "type": "int256"
-        },
-        {
-          "name": "beneficiary",
-          "type": "address"
-        }
-      ],
-      "name": "getLand",
-      "outputs": [],
-      "payable": false,
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "constant": false,
-      "inputs": [
-        {
-          "name": "x",
-          "type": "int256"
-        },
-        {
-          "name": "y",
-          "type": "int256"
         }
       ],
       "name": "getLand",
