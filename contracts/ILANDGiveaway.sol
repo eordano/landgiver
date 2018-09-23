@@ -6,7 +6,7 @@ interface ILANDGiveaway {
     
     function getLand(int x, int y) public;
     
-    function reclaimableLand() public view returns (int[] memory x, int[] memory y);
+    function reclaimableLand() public view returns (uint);
     
     function reclaimLand(int x, int y) public;
     

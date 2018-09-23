@@ -62,26 +62,20 @@ contract LANDGiveaway is ILANDGiveaway, Ownable, ERC721Receiver {
         rentTime = time;
     }
 
-    function reclaimableLand() public view returns (int[] memory xs, int[] memory ys) {
+    function reclaimableLand() public view returns (uint) {
         uint balance = land.balanceOf(this);
-        uint amount = balance - rentedLands;
 
         int x;
         int y;
-
-        xs = new int[](amount);
-        ys = new int[](amount);
 
         uint count = 0;
         for (uint index = 0; index < balance; index++) {
             (x, y) = land.decodeTokenId(land.tokenOfOwnerByIndex(this, index));
             if (rentedTo[x][y] != 0 && expires[x][y] < now) {
-                xs[count] = x;
-                ys[count] = y;
                 count++;
             }
         }
-        return (xs, ys);
+        return count;
     }
 
     function reclaimLand(int x, int y) public {

@@ -253,7 +253,7 @@ interface ILANDGiveaway {
     
     function getLand(int x, int y) public;
     
-    function reclaimableLand() public view returns (int[] memory x, int[] memory y);
+    function reclaimableLand() public view returns (uint);
     
     function reclaimLand(int x, int y) public;
     
@@ -271,16 +271,20 @@ contract LANDGiveaway is ILANDGiveaway, Ownable, ERC721Receiver {
     uint256 public rentTime = 60 * 60 * 24;
 
     ERC721 public land = ERC721(0x09ea84f780cfc6b10bafe7b26c8f7b1f3d2da112);
-    
-    function availableLand() public view returns (int[] memory xs, int[] memory ys) {
+
+    function availableLand() public view returns (int[] memory, int[] memory) {
         uint balance = land.balanceOf(this);
         uint amount = balance - rentedLands;
 
         int x;
         int y;
+
+        int[] memory xs = new int[](amount);
+        int[] memory ys = new int[](amount);
+
         uint count = 0;
         for (uint index = 0; index < balance; index++) {
-            (x, y) = land.decodeTokenId(land.tokenOfOwnerByIndex(this, index)); 
+            (x, y) = land.decodeTokenId(land.tokenOfOwnerByIndex(this, index));
             if (rentedTo[x][y] == 0) {
                 xs[count] = x;
                 ys[count] = y;
@@ -289,16 +293,17 @@ contract LANDGiveaway is ILANDGiveaway, Ownable, ERC721Receiver {
         }
         return (xs, ys);
     }
-    
+
     function getLand(int x, int y) public {
         getLand(x, y, msg.sender);
     }
-    
+
     function getLand(int x, int y, address beneficiary) public {
         if (rentedTo[x][y] != 0) {
             if (expires[x][y] < now) {
                 reclaimLand(x, y);
             }
+            revert('Already rented');
         }
         uint tokenId = land.encodeTokenId(x, y);
 
@@ -311,25 +316,23 @@ contract LANDGiveaway is ILANDGiveaway, Ownable, ERC721Receiver {
     function setRentTime(uint time) public onlyOwner {
         rentTime = time;
     }
-    
-    function reclaimableLand() public view returns (int[] memory xs, int[] memory ys) {
+
+    function reclaimableLand() public view returns (uint) {
         uint balance = land.balanceOf(this);
-        uint amount = balance - rentedLands;
 
         int x;
         int y;
+
         uint count = 0;
         for (uint index = 0; index < balance; index++) {
-            (x, y) = land.decodeTokenId(land.tokenOfOwnerByIndex(this, index)); 
+            (x, y) = land.decodeTokenId(land.tokenOfOwnerByIndex(this, index));
             if (rentedTo[x][y] != 0 && expires[x][y] < now) {
-                xs[count] = x;
-                ys[count] = y;
                 count++;
             }
         }
-        return (xs, ys);
+        return count;
     }
-    
+
     function reclaimLand(int x, int y) public {
         if (rentedTo[x][y] != 0 && expires[x][y] < now) {
             rentedTo[x][y] = 0;
@@ -338,7 +341,7 @@ contract LANDGiveaway is ILANDGiveaway, Ownable, ERC721Receiver {
             rentedLands -= 1;
         }
     }
-    
+
     function rentedLand() public view returns (int[] memory xs, int[] memory ys) {
         uint balance = land.balanceOf(this);
         uint amount = balance - rentedLands;
@@ -346,8 +349,12 @@ contract LANDGiveaway is ILANDGiveaway, Ownable, ERC721Receiver {
         uint count = 0;
         int x;
         int y;
+
+        xs = new int[](amount);
+        ys = new int[](amount);
+
         for (uint index = 0; index < balance; index++) {
-            (x, y) = land.decodeTokenId(land.tokenOfOwnerByIndex(this, index)); 
+            (x, y) = land.decodeTokenId(land.tokenOfOwnerByIndex(this, index));
             if (rentedTo[x][y] != 0 && expires[x][y] > now) {
                 xs[count] = x;
                 ys[count] = y;
