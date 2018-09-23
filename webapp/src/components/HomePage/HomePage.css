@@ -1,0 +1,50 @@
+.HomePage {
+}
+
+.HomePage .header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.HomePage .header .ui.header {
+  margin: 0px;
+}
+
+.HomePage .header .ui.button {
+  cursor: default;
+  margin: 0px;
+}
+
+.HomePage .button-wrapper {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-top: 24px;
+}
+
+.HomePage .button-wrapper > .message {
+  margin-left: 24px;
+  color: var(--secondary-text);
+}
+
+.HomePage .dcl.field .ui.input input {
+  border-color: var(--secondary-text);
+}
+
+.HomePage .dcl.field.error .ui.input input {
+  border-color: var(--danger);
+}
+
+.HomePage .ui.button.primary {
+  min-width: 198px;
+}
+
+.HomePage .ui.table .status {
+  text-transform: capitalize;
+}
+
+.HomePage .ui.table .address .dcl.address {
+  margin-left: 8px;
+}
