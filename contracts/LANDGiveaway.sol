@@ -8,13 +8,13 @@ import "ILANDGiveaway.sol";
 
 contract LANDGiveaway is ILANDGiveaway, Ownable, ERC721Receiver {
 
-    public mapping (int => mapping (int => address)) rentedTo;
-    public mapping (int => mapping (int => uint)) expires;
+    mapping (int => mapping (int => address)) public rentedTo;
+    mapping (int => mapping (int => uint)) public expires;
 
-    public uint256 rentedLands;
-    public uint256 rentTime = 60 * 60 * 24;
+    uint256 public rentedLands;
+    uint256 public rentTime = 60 * 60 * 24;
 
-    public ERC721 land = '0x09ea84f780cfc6b10bafe7b26c8f7b1f3d2da112';
+    ERC721 public land = '0x09ea84f780cfc6b10bafe7b26c8f7b1f3d2da112';
     
     function availableLand() public const returns (int[] xs, int[] ys) {
         uint balance = land.balanceOf(this);

@@ -1,0 +1,11 @@
+{
+  "name": "landgrab",
+  "version": "1.0.0",
+  "description": "A contract that grants temporary permission to use a land for 24 hours.",
+  "main": "index.js",
+  "author": "Esteban Ordano <esteban@decentraland.org>",
+  "license": "MIT",
+  "dependencies": {
+    "openzeppelin-solidity": "^1.12.0"
+  }
+}
