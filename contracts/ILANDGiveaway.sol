@@ -1,14 +1,14 @@
-pragma solidity ^0.4.25;
+pragma solidity ^0.4.24;
 
 interface ILANDGiveaway {
     
-    function availableLand() public view returns (int[] memory x, int[] memory y);
+    function availableLand() external view returns (int[] memory x, int[] memory y);
     
-    function getLand(int x, int y) public;
+    function getLand(int x, int y) external;
     
-    function reclaimableLand() public view returns (uint);
+    function reclaimableLand() external view returns (uint);
     
-    function reclaimLand(int x, int y) public;
+    function reclaimLand(int x, int y) external;
     
-    function rentedLand() public view returns (int[] memory x, int[] memory y);
+    function rentedLand() external view returns (int[] memory x, int[] memory y);
 }

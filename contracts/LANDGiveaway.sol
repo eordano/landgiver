@@ -1,4 +1,4 @@
-pragma solidity ^0.4.25;
+pragma solidity ^0.4.24;
 
 import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 import "openzeppelin-solidity/contracts/token/ERC721/ERC721.sol";
@@ -6,6 +6,11 @@ import "openzeppelin-solidity/contracts/token/ERC721/ERC721Receiver.sol";
 
 import "./ILANDGiveaway.sol";
 
+contract LAND721 is ERC721 {
+    function encodeTokenId(int x, int y) external pure returns (uint256);
+    function decodeTokenId(uint value) external pure returns (int, int);
+    function setUpdateOperator(uint tokenId, address beneficiary) external pure;
+}
 
 contract LANDGiveaway is ILANDGiveaway, Ownable, ERC721Receiver {
 
@@ -15,9 +20,9 @@ contract LANDGiveaway is ILANDGiveaway, Ownable, ERC721Receiver {
     uint256 public rentedLands;
     uint256 public rentTime = 60 * 60 * 24;
 
-    ERC721 public land = ERC721(0x09ea84f780cfc6b10bafe7b26c8f7b1f3d2da112);
+    LAND721 public land = LAND721(0x09eA84f780CFC6B10bAFE7B26c8F7B1f3D2DA112);
 
-    function availableLand() public view returns (int[] memory, int[] memory) {
+    function availableLand() external view returns (int[] memory, int[] memory) {
         uint balance = land.balanceOf(this);
         uint amount = balance - rentedLands;
 
@@ -39,14 +44,17 @@ contract LANDGiveaway is ILANDGiveaway, Ownable, ERC721Receiver {
         return (xs, ys);
     }
 
-    function getLand(int x, int y) public {
-        getLand(x, y, msg.sender);
+    function getLand(int x, int y) external {
+        _getLand(x, y, msg.sender);
+    }
+    function getLand(int x, int y, address beneficiary) external {
+        _getLand(x, y, beneficiary);
     }
 
-    function getLand(int x, int y, address beneficiary) public {
+    function _getLand(int x, int y, address beneficiary) internal {
         if (rentedTo[x][y] != 0) {
             if (expires[x][y] < now) {
-                reclaimLand(x, y);
+                _reclaimLand(x, y);
             }
             revert('Already rented');
         }
@@ -58,11 +66,11 @@ contract LANDGiveaway is ILANDGiveaway, Ownable, ERC721Receiver {
         land.setUpdateOperator(tokenId, beneficiary);
     }
 
-    function setRentTime(uint time) public onlyOwner {
+    function setRentTime(uint time) external onlyOwner {
         rentTime = time;
     }
 
-    function reclaimableLand() public view returns (uint) {
+    function reclaimableLand() external view returns (uint) {
         uint balance = land.balanceOf(this);
 
         int x;
@@ -78,7 +86,11 @@ contract LANDGiveaway is ILANDGiveaway, Ownable, ERC721Receiver {
         return count;
     }
 
-    function reclaimLand(int x, int y) public {
+    function reclaimLand(int x, int y) external {
+        _reclaimLand(x, y);
+    }
+
+    function _reclaimLand(int x, int y) internal {
         if (rentedTo[x][y] != 0 && expires[x][y] < now) {
             rentedTo[x][y] = 0;
             expires[x][y] = 0;
@@ -87,7 +99,7 @@ contract LANDGiveaway is ILANDGiveaway, Ownable, ERC721Receiver {
         }
     }
 
-    function rentedLand() public view returns (int[] memory xs, int[] memory ys) {
+    function rentedLand() external view returns (int[] memory xs, int[] memory ys) {
         uint balance = land.balanceOf(this);
         uint amount = balance - rentedLands;
 
@@ -110,10 +122,10 @@ contract LANDGiveaway is ILANDGiveaway, Ownable, ERC721Receiver {
     }
 
     function onERC721Received(
-        address _operator,
-        address _from,
-        uint256 _tokenId,
-        bytes _data
+        address,
+        address,
+        uint256,
+        bytes
     )
         public
         returns (bytes4)
