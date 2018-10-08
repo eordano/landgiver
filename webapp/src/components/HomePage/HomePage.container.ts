@@ -1,12 +1,15 @@
 import { connect } from 'react-redux'
 import { RootState } from 'types'
-import { getAddress } from '@dapps/modules/wallet/selectors'
+import { getAddress, isConnecting } from '@dapps/modules/wallet/selectors'
 import {
   getPendingTransactions,
   getTransactionHistory
 } from '@dapps/modules/transaction/selectors'
 
-import { getAvailable } from 'modules/giveaway/selectors'
+import {
+  getAvailable,
+  isLoading as isGiveawayLoading
+} from 'modules/giveaway/selectors'
 import { Coordinates } from 'modules/giveaway/types'
 
 import { Dispatch, AnyAction } from 'redux'
@@ -17,6 +20,7 @@ import { HomePageProps } from './types'
 
 const mapState = (state: RootState): Partial<HomePageProps> => {
   const address = getAddress(state)
+  const isLoading = isConnecting(state) || isGiveawayLoading(state)
   const available = getAvailable(state)
 
   const pendingTransactions = address
@@ -29,6 +33,7 @@ const mapState = (state: RootState): Partial<HomePageProps> => {
   const totalSent = pendingTransactions.length + transactionHistory.length
 
   return {
+    isLoading,
     available,
     pendingTransactions,
     transactionHistory,
