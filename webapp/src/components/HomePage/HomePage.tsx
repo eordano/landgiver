@@ -1,5 +1,12 @@
 import * as React from 'react'
-import { Header, Segment, Table, Blockie, Address } from 'decentraland-ui'
+import {
+  Header,
+  Segment,
+  Table,
+  Blockie,
+  Address,
+  Loader
+} from 'decentraland-ui'
 
 import EtherscanLink from '@dapps/containers/EtherscanLink'
 import { Transaction } from '@dapps/modules/transaction/types'
@@ -48,12 +55,18 @@ export default class HomePage extends React.PureComponent<
 
   render() {
     const {
+      isLoading,
       available,
       pendingTransactions,
       transactionHistory,
       totalSent
     } = this.props
-    const transations = [...pendingTransactions, ...transactionHistory]
+    const transactions = [...pendingTransactions, ...transactionHistory]
+
+    if (isLoading) {
+      return <Loader active size="massive" />
+    }
+
     return (
       <div className="HomePage">
         <Header size="huge">Giving Away LAND</Header>
@@ -74,7 +87,7 @@ export default class HomePage extends React.PureComponent<
                 <Table.HeaderCell>Status</Table.HeaderCell>
               </Table.Header>
               <Table.Body>
-                {transations.map((transaction: Transaction) => (
+                {transactions.map((transaction: Transaction) => (
                   <Table.Row>
                     <Table.Cell className="address">
                       <Blockie

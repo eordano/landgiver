@@ -3,6 +3,7 @@ import { Coordinates } from 'modules/giveaway/types'
 import { GetLandRequestAction } from 'modules/giveaway/actions'
 
 export interface HomePageProps {
+  isLoading: boolean
   available: Coordinates[]
   pendingTransactions: Transaction[]
   transactionHistory: Transaction[]
