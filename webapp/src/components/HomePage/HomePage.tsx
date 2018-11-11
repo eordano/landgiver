@@ -28,7 +28,7 @@ class LandImage extends React.PureComponent<LandImageProps, any> {
   render() {
     const land = this.props.coors
     const key = `${land.x},${land.y}`
-    const url = `https://api.decentraland.org/v1/map.png?width=64&height=64&center=${key}`
+    const url = `https://api.decentraland.org/v1/map.png?width=64&height=64&center=${key}&selected=${key}`
     return (
       <div className="" key={key}>
         <a href="#" onClick={this.handleClick}>
